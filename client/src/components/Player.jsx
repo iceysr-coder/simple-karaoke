@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Play, Pause, Volume2, Music, Mic, MicOff, Headphones, Settings, RefreshCw } from 'lucide-react';
 import { useYouTubePlayer } from '../hooks/useYouTubePlayer.js';
 
@@ -27,22 +27,34 @@ function LevelMeter({ level, active }) {
 
 function Popover({ children, trigger, align = 'center' }) {
   const [open, setOpen] = useState(false);
-  const posStyle = align === 'left'
-    ? { left: 0 }
-    : align === 'right'
-    ? { right: 0 }
-    : { left: '50%', transform: 'translateX(-50%)' };
+  const triggerRef = useRef(null);
+  const [pos, setPos] = useState({ bottom: 60, left: 0 });
+
+  const handleOpen = () => {
+    if (!open && triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      const popW = 280;
+      let left;
+      if (align === 'left') left = rect.left;
+      else if (align === 'right') left = rect.right - popW;
+      else left = rect.left + rect.width / 2 - popW / 2;
+      left = Math.max(8, Math.min(left, window.innerWidth - popW - 8));
+      setPos({ bottom: window.innerHeight - rect.top + 8, left });
+    }
+    setOpen(o => !o);
+  };
+
   return (
-    <div style={{ position: 'relative' }}>
-      <div onClick={() => setOpen(o => !o)}>{trigger}</div>
+    <div ref={triggerRef} style={{ position: 'relative' }}>
+      <div onClick={handleOpen}>{trigger}</div>
       {open && (
         <>
           <div style={{ position: 'fixed', inset: 0, zIndex: 99 }} onClick={() => setOpen(false)} />
           <div style={{
-            position: 'absolute', bottom: '100%', ...posStyle,
-            marginBottom: 10, zIndex: 100,
+            position: 'fixed', bottom: pos.bottom, left: pos.left,
+            zIndex: 100, width: 280,
             background: 'var(--surface)', border: '1px solid var(--border)',
-            borderRadius: 12, padding: 16, minWidth: 260, boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+            borderRadius: 12, padding: 16, boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
           }}>
             {children}
           </div>
@@ -96,10 +108,10 @@ function BarButton({ onClick, active, activeColor = 'var(--accent)', title, chil
       title={title}
       style={{
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-        gap: 4, padding: '8px 14px', borderRadius: 10, border: 'none', cursor: 'pointer',
+        gap: 3, padding: '6px 10px', borderRadius: 10, border: 'none', cursor: 'pointer',
         background: active ? activeColor : 'rgba(255,255,255,0.08)',
         color: active ? '#fff' : 'rgba(255,255,255,0.75)',
-        transition: 'all 0.15s', minWidth: 48,
+        transition: 'all 0.15s', minWidth: 40,
       }}
     >
       {children}
