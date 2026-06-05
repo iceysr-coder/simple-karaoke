@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "youtube-search-api": "^1.6.6"
+    "youtube-search-api": "^2.0.1"
   }
 }
