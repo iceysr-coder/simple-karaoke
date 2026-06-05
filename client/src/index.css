@@ -13,11 +13,15 @@
   --red: #ef4444;
 }
 
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
   font-family: 'Segoe UI', system-ui, sans-serif;
   background: var(--bg);
   color: var(--text);
-  min-height: 100vh;
 }
 
 ::-webkit-scrollbar { width: 6px; }

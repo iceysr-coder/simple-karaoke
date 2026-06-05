@@ -58,7 +58,7 @@ export default function App() {
   }, [refresh]);
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       {/* Header */}
       <header style={{
         padding: '16px 24px', borderBottom: '1px solid var(--border)',
