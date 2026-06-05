@@ -25,8 +25,13 @@ function LevelMeter({ level, active }) {
   );
 }
 
-function Popover({ children, trigger }) {
+function Popover({ children, trigger, align = 'center' }) {
   const [open, setOpen] = useState(false);
+  const posStyle = align === 'left'
+    ? { left: 0 }
+    : align === 'right'
+    ? { right: 0 }
+    : { left: '50%', transform: 'translateX(-50%)' };
   return (
     <div style={{ position: 'relative' }}>
       <div onClick={() => setOpen(o => !o)}>{trigger}</div>
@@ -34,7 +39,7 @@ function Popover({ children, trigger }) {
         <>
           <div style={{ position: 'fixed', inset: 0, zIndex: 99 }} onClick={() => setOpen(false)} />
           <div style={{
-            position: 'absolute', bottom: '100%', left: '50%', transform: 'translateX(-50%)',
+            position: 'absolute', bottom: '100%', ...posStyle,
             marginBottom: 10, zIndex: 100,
             background: 'var(--surface)', border: '1px solid var(--border)',
             borderRadius: 12, padding: 16, minWidth: 260, boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
@@ -192,7 +197,7 @@ export default function Player({
             {isPlaying ? <Pause size={18} fill="#fff" /> : <Play size={18} fill="#fff" style={{ marginLeft: 1 }} />}
           </BarButton>
 
-          <Popover trigger={
+          <Popover align="left" trigger={
             <BarButton>
               <Volume2 size={16} />
               <span style={{ fontSize: 10 }}>{volume}%</span>
@@ -234,7 +239,7 @@ export default function Player({
 
         {/* Right: Devices */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Popover trigger={
+          <Popover align="right" trigger={
             <BarButton>
               <Settings size={16} />
               <span style={{ fontSize: 10 }}>อุปกรณ์</span>
