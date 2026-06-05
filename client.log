@@ -1,0 +1,24 @@
+
+> karaoke-client@1.0.0 dev
+> vite
+
+
+  [32m[1mVITE[22m v4.5.14[39m  [2mready in [0m[1m316[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://127.0.0.1:[1m3000[22m/[39m
+[2m  [32m➜[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
+[2m[32m  ➜[39m[22m[2m  press [22m[1mh[22m[2m to show help[22m
+[2m21:04:08[22m [33m[1m[vite][22m[39m [33mwarning: [33mDuplicate key "border" in object literal[33m
+230|              color: micActive ? '#fff' : 'var(--muted)',
+231|              cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, fontSize: 13,
+232|              border: `1px solid ${micActive ? 'var(--green)' : 'var(--border)'}`
+   |              ^
+233|            }}>
+234|            
+[39m
+  Plugin: [35mvite:esbuild[39m
+  File: [36mC:/Users/ksyuk/projects/karaoke/client/src/components/Player.jsx[39m
+[2m21:07:17[22m [36m[1m[vite][22m[39m [32mvite.config.js changed, restarting server...[39m
+[31mfailed to load config from C:\Users\ksyuk\projects\karaoke\client\vite.config.js[39m
+[2m21:07:17[22m [31m[1m[vite][22m[39m Cannot find package 'express' imported from C:\Users\ksyuk\projects\karaoke\client\vite.config.js.timestamp-1780582037720-87609b3feda1.mjs
+[2m21:07:17[22m [31m[1m[vite][22m[39m server restart failed
