@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import SearchBar from './components/SearchBar.jsx';
 import VideoList from './components/VideoList.jsx';
 import Queue from './components/Queue.jsx';
@@ -24,7 +24,9 @@ export default function App() {
     switchOutputDevice,
   } = useAudioMixer();
   const { audioInputs, audioOutputs, inputDeviceId, outputDeviceId, setInputDeviceId, setOutputDeviceId, refresh } = useDevices();
-  const { queue, addToQueue, removeFromQueue, moveUp, moveDown, clearQueue, shiftQueue } = useQueue();
+  const { queue, addToQueue, removeFromQueue, moveUp, moveDown, clearQueue } = useQueue();
+  const queueRef = useRef(queue);
+  useEffect(() => { queueRef.current = queue; }, [queue]);
 
   const queueIds = useMemo(() => new Set(queue.map((v) => v.id)), [queue]);
 
@@ -60,9 +62,12 @@ export default function App() {
   }, [switchOutputDevice, setOutputDeviceId]);
 
   const handleEnded = useCallback(() => {
-    const next = shiftQueue();
-    if (next) setCurrentVideo(next);
-  }, [shiftQueue]);
+    const q = queueRef.current;
+    if (!q.length) return;
+    const next = q[0];
+    removeFromQueue(next.id);
+    setCurrentVideo(next);
+  }, [removeFromQueue]);
 
   const handleAddToQueue = useCallback((video) => {
     addToQueue(video);
