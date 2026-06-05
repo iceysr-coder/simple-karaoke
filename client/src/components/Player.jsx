@@ -121,9 +121,10 @@ export default function Player({
   onTogglePlayback, onToggleNoiseSuppression,
   audioInputs, audioOutputs, inputDeviceId, outputDeviceId,
   onInputChange, onOutputChange, onRefreshDevices,
+  onEnded,
 }) {
   const ytContainerId = 'yt-player-container';
-  const { loadVideo, destroyPlayer, togglePlay, seek, setVol, playerState, volume, currentTime, duration } = useYouTubePlayer(ytContainerId);
+  const { loadVideo, destroyPlayer, togglePlay, seek, setVol, playerState, volume, currentTime, duration } = useYouTubePlayer(ytContainerId, { onEnded });
 
   useEffect(() => {
     if (video) loadVideo(video.id);

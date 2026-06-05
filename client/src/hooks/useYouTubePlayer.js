@@ -23,13 +23,15 @@ function onYTReady(cb) {
   loadYTApi();
 }
 
-export function useYouTubePlayer(containerId) {
+export function useYouTubePlayer(containerId, { onEnded } = {}) {
   const playerRef = useRef(null);
   const [playerState, setPlayerState] = useState('unstarted'); // unstarted | playing | paused | ended | buffering
   const [volume, setVolume] = useState(80);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const timerRef = useRef(null);
+  const onEndedRef = useRef(onEnded);
+  onEndedRef.current = onEnded;
 
   const destroyPlayer = useCallback(() => {
     clearInterval(timerRef.current);
@@ -67,6 +69,9 @@ export function useYouTubePlayer(containerId) {
             onStateChange(e) {
               const states = { '-1': 'unstarted', 0: 'ended', 1: 'playing', 2: 'paused', 3: 'buffering', 5: 'cued' };
               setPlayerState(states[e.data] || 'unstarted');
+              if (e.data === window.YT.PlayerState.ENDED) {
+                onEndedRef.current?.();
+              }
               if (e.data === window.YT.PlayerState.PLAYING) {
                 setDuration(e.target.getDuration());
                 timerRef.current = setInterval(() => {
